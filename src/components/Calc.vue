@@ -41,14 +41,17 @@ export default {
   },
   computed:
   {
+    // формирование массива для отрисовки кнопок
     buttons()
     {
       return 'CE C ^ / 7 8 9 * 4 5 6 - 1 2 3 + 0 ( ) ='.split(' ')
     },
+    // набор цифр
     numbers()
     {
       return '1 2 3 4 5 6 7 8 9 0'
     },
+    // набор используемых символов
     symbols()
     {
       return 'CE C ^ / * - + ( ) ='
@@ -58,6 +61,7 @@ export default {
   {
     value()
     {
+      // Создание float числа для ввода
       let valueIdx = this.value.toString().split('').filter( el => el == '.').length;
       let val = parseFloat(this.value)
       let vIdx = val.toString().split('').filter( el => el == '.').length;
@@ -72,55 +76,58 @@ export default {
   },
   methods: 
   {
-    keyup(e)
+    // Функция при нажатие клавишы клавиатуры
+    keyup( e )
     {
-      if ((e.key).match(/[0-9\/*\-+\(\)^=]|Backspace|Enter|Escape/))
+      if ( (e.key).match(/[0-9\/*\-+\(\)^=]|Backspace|Enter|Escape/) )
         this.setValue(e.key)
     },
-    click(key)
+    // Функция при нажатие на кнопку калькулятора
+    click( key )
     {
       if( Number( key ) || key === '0')
         this.value += key
       else
-        this.setValue(key, true)
-      
+        this.setValue( key )
     },
-    setValue(key , boolean)
+    // условия отрисовки значения
+    setValue( key )
     { 
       let val = this.summValue.toString()
-      val = val[ val.length - 1];
+      val = val[ val.length - 1 ];
       let str = this.value + key
 
-      if( this.symbols.includes( key ) && !(key === 'Enter' || key === '=' || key === 'CE' || key === 'Escape' || key === 'C' ))
+      if( this.symbols.includes( key ) && !( key === 'Enter' || key === '=' || key === 'CE' || key === 'Escape' || key === 'C' ))
       {
         if( val === key && !this.value )
           return 
-        else if( !this.value && this.numbers.includes( val ) &&  ( key !== '(' || key !== ')' ) )
+        else if ( !this.value && this.numbers.includes( val ) &&  ( key !== '(' || key !== ')' ) )
           str = key;
-        else if( !this.value && this.symbols.includes( val ) &&   key !== '(' && key !== ')'  )
+        else if ( !this.value && this.symbols.includes( val ) &&   key !== '(' && key !== ')'  )
           str = key;
         else if ( val === undefined && this.value !== 0 && ( key === ')' || key === '(' || key === '-' ) )
           str = key + this.value
-        else if( this.symbols.includes( val ) && ( key === '(' ) )
+        else if ( this.symbols.includes( val ) && ( key === '(' ) )
           str = key + this.value;
         else if ( this.symbols.includes( val ) && key === ')')
           str = this.value + key;
-        else if( this.numbers.includes( val ) && ( key !== '(' || key !== ')' ) )
+        else if ( this.numbers.includes( val ) && ( key !== '(' || key !== ')' ) )
           str = key + this.value;
       
         this.summValue+= str
         this.value = ''
       }
 
-      if (key === 'Enter' || key === '=' ) 
+      if ( key === 'Enter' || key === '=' ) 
         this.enteryValue()
 
-      if( key === 'CE' || key === 'Escape' || key === 'C')
-        this.clearValue(key)
+      if( key === 'CE' || key === 'Escape' || key === 'C' )
+        this.clearValue( key )
     },
+    // Очищение поля
     clearValue( key )
     {
-      if( key === 'C')
+      if( key === 'C' )
         this.value = '';
       else
       {
@@ -128,6 +135,7 @@ export default {
         this.value = '';
       }
     },
+    // Презапуск подсчета
     enteryValue()
     {
       if( this.summValue.length === 0 || !this.summValue[ this.summValue.length - 1])
@@ -137,14 +145,15 @@ export default {
       this.value = ''
       this.calValue();
     },
+    // Подсчет с проверкой
     calValue()
     {
       this.error = false;
       let str  = this.summValue.replace(/\^/g, '**');
       let func;
       try {
-        func = new Function( 'return ' + str)();
-      } catch (error) {
+        func = new Function( 'return ' + str )();
+      } catch ( error ) {
         func = ''
         this.value = ''
       }
