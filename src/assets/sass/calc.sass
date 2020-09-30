@@ -1,0 +1,61 @@
+$color: #42b983;
+$color-second: #2c3e50;
+
+.calc
+  position: relative
+  padding: 20px 10px 10px 10px
+  width: 250px
+  background-color: white
+  box-shadow: 0 0 2px 4px rgba(255, 255, 255,.3 )
+  border-radius: 8px
+  &-error
+    position: absolute
+    top: 10px
+    color: #c70808f5
+    font-size: 12px
+  &-value
+    position: relative
+    border: 1px solid rgba(0,0,0,.1)
+    border-radius: 8px
+    padding: 0px 15px
+    margin: 10px 0px
+    &_old
+      width: 100%
+      height: 20px
+      padding: 10px 0px
+      text-align: end
+    &.-error-
+      border-color: rgba(255,0,0,.3)
+    &.-focus-
+      border-color: rgba(0,0,255,.3)
+  &-input
+    width: 100%
+    min-height: 50px
+    font-size: 25px
+    color: $color-second
+    text-align: end
+
+  &-buttons
+    &_numbers
+      position: relative
+      display: grid
+      grid-template-columns: repeat(4, calc( (100% - 10px)/ 4))
+      grid-gap: 5px
+    &_number
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      padding: 10px
+      cursor: pointer
+      border-radius: 8px
+      font-size: 18px
+      color: $color-second
+      &:hover
+        background-color: rgba(0,0,255,.1)
+        color: white
+      &.-empty-
+        background-color: $color
+        border-radius: 4px
+        &:hover
+          background-color: $color
